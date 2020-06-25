@@ -1,0 +1,54 @@
+package Editeur;
+
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EventObject;
+
+import javax.swing.AbstractCellEditor;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.table.TableCellEditor;
+
+import Lecteur.ModeleQuestion;
+import Lecteur.ModeleVraiFaux;
+
+
+public class EditeurCellEdit extends AbstractCellEditor implements TableCellEditor{
+
+	private JButton bouton;
+	private ModeleEditeur modele;
+
+    public EditeurCellEdit(ModeleEditeur modele) {
+        super();
+        this.modele = modele;
+        bouton = new JButton("Éditer");
+        bouton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fireEditingStopped();
+				
+			}
+		});
+ 
+    }
+ 
+    @Override
+    public Object getCellEditorValue() {
+        return "";
+    }
+    
+    private void openEditor(int indexModele) {
+    	ModeleQuestion modelePress = modele.getQuestion(indexModele);
+    	if(modelePress instanceof ModeleVraiFaux) {
+    		EditeurVraiFaux editeur = new EditeurVraiFaux(modele, indexModele);
+    	}
+    }
+ 
+    @Override
+    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+    	openEditor(table.convertRowIndexToModel(row));
+        return bouton;
+    }
+}
