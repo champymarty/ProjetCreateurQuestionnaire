@@ -67,7 +67,7 @@ public class PaneauMultipleReponse extends JPanel {
 	private void interfaceImage() {
 		setLayout(new BorderLayout());
 		JPanel pnlTitre = new JPanel();
-		pnlTitre.add(new JLabel(modele.getQuestion()));
+		pnlTitre.add(new JLabel(modele.getNumeroQuestion() + ") " + modele.getQuestion()));
 		add(pnlTitre, BorderLayout.NORTH);
 		
 		JPanel pnlChoix = new JPanel();

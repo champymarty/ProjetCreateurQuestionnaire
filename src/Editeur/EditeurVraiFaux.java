@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -28,7 +30,7 @@ public class EditeurVraiFaux extends JFrame{
 	private JRadioButton btn1, btn2;
 	private ButtonGroup group = new ButtonGroup();
 	private int posQuestion;
-	
+		
 	public EditeurVraiFaux(ModeleEditeur modele, int posQuestion) {
 		this.modele = modele;
 		this.posQuestion = posQuestion;
@@ -47,8 +49,21 @@ public class EditeurVraiFaux extends JFrame{
 		creerEvents();
 		setSize(800, 400);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	    addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+            	quit();
+            }
+        });
 		setVisible(true);
+	}
+	
+	private void quit() {
+    	modele.setEditeurQuestionOuvert(false);
+    	dispose();
 	}
 	
 	public void creerEvents() {
@@ -60,12 +75,12 @@ public class EditeurVraiFaux extends JFrame{
 					modele.ajouterQuestionVraiFaux(Integer.parseInt(txtOrdrePassage.getText()),
 							txtQuestion.getText(), txtReussite.getText(), txtFail.getText(), 
 							true, Integer.parseInt(txtEssait.getText()));
-					dispose();
+					quit();
 				}else if(posQuestion >= 0) {
 					modele.modificationQuestionVraiFaux(posQuestion, Integer.parseInt(txtOrdrePassage.getText()),
 							txtQuestion.getText(), txtReussite.getText(), txtFail.getText(), 
 							true, Integer.parseInt(txtEssait.getText()));
-					dispose();
+					quit();
 				}
 			}
 		});
@@ -74,13 +89,13 @@ public class EditeurVraiFaux extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(posQuestion == -1) {
-					dispose();
+					quit();
 				}else if(posQuestion >= 0) {
 					int reply = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette question ? Cette"
 							+ "Action est irréversible", "Confirmation", JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.YES_OPTION) {
 						modele.supprimerAffichable(posQuestion);
-						dispose();
+						quit();
 					} 
 				}
 			}

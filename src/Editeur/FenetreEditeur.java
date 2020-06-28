@@ -70,7 +70,7 @@ public class FenetreEditeur extends JFrame {
     private void creerInterfaceMilieu() {
     	tableau = new JTable(modele);
         tableau.setFillsViewportHeight(true);
-        tableau.getColumnModel().getColumn(3).setCellRenderer(new EditerCellRenderer());
+        tableau.getColumnModel().getColumn(3).setCellRenderer(new CellBoutonRenderer());
         tableau.getColumnModel().getColumn(3).setCellEditor(new EditeurCellEdit(modele));
         scroll = new JScrollPane(tableau);
         

@@ -46,7 +46,7 @@ public class PaneauChoixMultiple extends JPanel {
 	private void creerInterface() {
 		setLayout(new BorderLayout());
 		JPanel pnlTitre = new JPanel();
-		pnlTitre.add(new JLabel(modele.getQuestion()));
+		pnlTitre.add(new JLabel(modele.getNumeroQuestion() + ") " + modele.getQuestion()));
 		add(pnlTitre, BorderLayout.NORTH);
 		
 		JPanel pnlChoix = new JPanel();

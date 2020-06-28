@@ -24,6 +24,8 @@ public class ModeleEditeur extends AbstractTableModel {
 	private ModeleGestionnaire modeleGestionnaire;
 	private int posQuestionnaire;
 	
+	private boolean editeurQuestionOuvert = false;
+	
 	public enum Question{
 		VRAI_FAUX,
 		QUESTION_CHOIX_MULTIPLE,
@@ -33,6 +35,14 @@ public class ModeleEditeur extends AbstractTableModel {
 	public ModeleEditeur(ModeleGestionnaire modeleGestionnaire, int posQuestionnaire) {
 		this.posQuestionnaire = posQuestionnaire;
 		this.modeleGestionnaire = modeleGestionnaire;
+	}
+	
+	public void setEditeurQuestionOuvert(boolean editeurQuestionOuvert) {
+		this.editeurQuestionOuvert = editeurQuestionOuvert;
+	}
+	
+	public boolean isEditeurQuestionOuvert() {
+		return editeurQuestionOuvert;
 	}
 	
 	public String getNomQuestionnaire() {

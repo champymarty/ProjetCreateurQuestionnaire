@@ -3,6 +3,8 @@ package Editeur;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
@@ -42,6 +44,7 @@ public class EditeurCellEdit extends AbstractCellEditor implements TableCellEdit
     }
     
     private void openEditor(int indexModele) {
+    	if(!modele.isEditeurQuestionOuvert()) {
     	ModeleQuestion modelePress = modele.getQuestion(indexModele);
     	if(modelePress instanceof ModeleVraiFaux) {
     		EditeurVraiFaux editeur = new EditeurVraiFaux(modele, indexModele);
@@ -49,6 +52,8 @@ public class EditeurCellEdit extends AbstractCellEditor implements TableCellEdit
     		EditeurQuestionMultiple editeur = new EditeurQuestionMultiple(modele, indexModele, false);
     	}else if(modelePress instanceof ModeleMultipleReponse) {
     		EditeurQuestionMultiple editeur = new EditeurQuestionMultiple(modele, indexModele, true);
+    	}
+    	modele.setEditeurQuestionOuvert(true);
     	}
     }
  

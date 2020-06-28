@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -29,6 +31,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Lecteur.ModeleChoixMultiple;
+import Lecteur.ModeleMultipleReponse;
 import Lecteur.ModeleVraiFaux;
 
 public class EditeurQuestionMultiple extends JFrame {
@@ -70,8 +73,15 @@ public class EditeurQuestionMultiple extends JFrame {
 			btnSave = new JButton("Enregistrer modifications");
 			btnSupprimer = new JButton("Supprimer la question");
 			btnSupprimer.setBackground(Color.RED);
-			ModeleChoixMultiple modeleQuestion = (ModeleChoixMultiple)modele.getQuestion(posQuestion);
-			modeleTab = new ModeleTableauReponse(modeleQuestion.getChoix(), multipleReponse);
+			if(multipleReponse) {
+				ModeleMultipleReponse modeleQuestion = (ModeleMultipleReponse)modele.getQuestion(posQuestion);
+				modeleTab = new ModeleTableauReponse(modeleQuestion.getChoix(), multipleReponse);
+
+			}else {
+				ModeleChoixMultiple modeleQuestion = (ModeleChoixMultiple)modele.getQuestion(posQuestion);
+				modeleTab = new ModeleTableauReponse(modeleQuestion.getChoix(), multipleReponse);
+			}
+
 			isReponseImage = modele.isReponseImage(posQuestion);
 		}
 		modeleTab.setReponseImage(isReponseImage);
@@ -79,10 +89,22 @@ public class EditeurQuestionMultiple extends JFrame {
 		creerEvents();
 		setSize(1200, 600);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	    addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+            	quit();
+            }
+        });
 		setVisible(true);
 	}
 	
+	private void quit() {
+    	modele.setEditeurQuestionOuvert(false);
+    	dispose();		
+	}
 	
 	public void creerEvents() {
 		btnSave.addActionListener(new ActionListener() {
@@ -104,7 +126,7 @@ public class EditeurQuestionMultiple extends JFrame {
 							txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
 							, modeleTab.getReponses(), indexReponse, isReponseImage);
 					}
-					dispose();
+					quit();
 				}else if(posQuestion >= 0) {
 					if(multipleReponse) {
 						modele.modifierQuestionReponseMultiple(posQuestion, Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
@@ -120,7 +142,7 @@ public class EditeurQuestionMultiple extends JFrame {
 							txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
 							, modeleTab.getReponses(),indexReponse, isReponseImage);
 					}
-					dispose();
+					quit();
 				}
 			}
 		});
@@ -129,13 +151,13 @@ public class EditeurQuestionMultiple extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(posQuestion == -1) {
-					dispose();
+					quit();
 				}else if(posQuestion >= 0) {
 					int reply = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette question ? Cette"
 							+ "Action est irréversible", "Confirmation", JOptionPane.YES_NO_OPTION);
 					if (reply == JOptionPane.YES_OPTION) {
 						modele.supprimerAffichable(posQuestion);
-						dispose();
+						quit();
 					} 
 				}
 			}
@@ -332,7 +354,7 @@ public class EditeurQuestionMultiple extends JFrame {
 	private JPanel creerInterfaceNbEssait() {
 		//Nb essait
 		JPanel pnlMessageEssait = new JPanel();
-		pnlMessageEssait.add(new JLabel("Nombre d'essait ( -1 pour un nombre illimité d'essais ): "));
+		pnlMessageEssait.add(new JLabel("Nombre d'essais ( -1 pour un nombre illimité d'essais ): "));
 		txtEssait.setPreferredSize(new Dimension(50, 25));
 		if(posQuestion >= 0) {
 			txtEssait.setText(modele.getQuestion(posQuestion).getNbEssait()+"");

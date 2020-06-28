@@ -28,7 +28,11 @@ public class ControleurLecteur {
 	}
 	
 	private void chargerQuestions() {
+		int nbQuestion = 1;
 		for(Affichable modele : questionnaire.getModeles()) {
+			if(modele instanceof ModeleQuestion) {
+				((ModeleQuestion) modele).setNumeroQuestion(nbQuestion++);
+			}
 			panneauQuestions.add(modele.generateAffichage());
 		}
 	}

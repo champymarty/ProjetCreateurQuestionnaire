@@ -24,12 +24,28 @@ public class ModeleTableauReponse extends AbstractTableModel {
 	public ModeleTableauReponse(ArrayList<Reponse> choix, boolean multipleReponse) {
 		reponses = choix;
 		this.multipleReponse = multipleReponse;
+		if(!multipleReponse) {
+			trouverPosBonneReponse();
+		}
 	}
 	
 	public ModeleTableauReponse(boolean multipleReponse) {
 		this.multipleReponse = multipleReponse;
+		if(!multipleReponse) {
+			trouverPosBonneReponse();
+		}
 	}
 	
+	private void trouverPosBonneReponse() {
+		int i = 0;
+		for(Reponse rep : reponses) {
+			if(rep.isBonneReponse()) {
+				posBonneReponse = i;
+				break;
+			}
+			i++;
+		}
+	}
 	public ArrayList<Reponse> getReponses() {
 		return reponses;
 	}

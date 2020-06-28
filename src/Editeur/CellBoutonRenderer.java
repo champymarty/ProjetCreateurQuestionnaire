@@ -8,11 +8,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 
-	public class EditerCellRenderer extends DefaultTableCellRenderer {
+	public class CellBoutonRenderer extends DefaultTableCellRenderer {
 		
 		private JButton btn;
 		
-		public EditerCellRenderer() {
+		public CellBoutonRenderer() {
 		}
 	    @Override
 	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
