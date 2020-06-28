@@ -46,7 +46,9 @@ public class EditeurCellEdit extends AbstractCellEditor implements TableCellEdit
     	if(modelePress instanceof ModeleVraiFaux) {
     		EditeurVraiFaux editeur = new EditeurVraiFaux(modele, indexModele);
     	}else if(modelePress instanceof ModeleChoixMultiple) {
-    		EditeurQuestionMultiple editeur = new EditeurQuestionMultiple(modele, indexModele);
+    		EditeurQuestionMultiple editeur = new EditeurQuestionMultiple(modele, indexModele, false);
+    	}else if(modelePress instanceof ModeleMultipleReponse) {
+    		EditeurQuestionMultiple editeur = new EditeurQuestionMultiple(modele, indexModele, true);
     	}
     }
  

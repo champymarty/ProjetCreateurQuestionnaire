@@ -6,21 +6,23 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Editeur.Reponse;
+
 public class ModeleMultipleReponse extends ModeleQuestion implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5982108056365527000L;
-	private ArrayList<String> choix = new ArrayList<>();
+	private ArrayList<Reponse> choix = new ArrayList<>();
 	private ArrayList<Integer> indexSelectionnes = new ArrayList<>();
 	private ArrayList<Integer> indexReponses;
 	
 	private boolean estImage;
 	
-	public ModeleMultipleReponse(int numeroQuestion, String question, String messageReussite, String messageFail,
-			int nbEssait, ArrayList<String> choix,ArrayList<Integer> indexReponse, boolean estImage) {
-		super(numeroQuestion, question, messageReussite, messageFail, nbEssait);
+	public ModeleMultipleReponse(int ordrePassage, String question, String messageReussite, String messageFail,
+			int nbEssait, ArrayList<Reponse> choix,ArrayList<Integer> indexReponse, boolean estImage) {
+		super(ordrePassage, question, messageReussite, messageFail, nbEssait);
 		this.choix = choix;
 		this.indexReponses = indexReponse;
 		this.estImage = estImage;
@@ -39,13 +41,29 @@ public class ModeleMultipleReponse extends ModeleQuestion implements Serializabl
 		return choix.size();
 	}
 	
-	public ArrayList<String> getChoix(){
+	public void setChoix(ArrayList<Reponse> choix) {
+		this.choix = choix;
+	}
+	
+	public void setEstImage(boolean estImage) {
+		this.estImage = estImage;
+	}
+	
+	public void setIndexReponses(ArrayList<Integer> indexReponses) {
+		this.indexReponses = indexReponses;
+	}
+	
+	public void setIndexSelectionnes(ArrayList<Integer> indexSelectionnes) {
+		this.indexSelectionnes = indexSelectionnes;
+	}
+	
+	public ArrayList<Reponse> getChoix(){
 		return choix;
 	}
 	
 	public String getChoix(int index) {
 		if( index < choix.size()) {
-			return choix.get(index);
+			return choix.get(index).getAffichage();
 		}
 		return null;
 	}

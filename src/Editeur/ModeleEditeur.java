@@ -121,9 +121,10 @@ public class ModeleEditeur extends AbstractTableModel {
 			EditeurVraiFaux editeur1 = new EditeurVraiFaux(this, -1);
 			break;
 		case QUESTION_CHOIX_MULTIPLE:
-			EditeurQuestionMultiple editeur2 = new EditeurQuestionMultiple(this, -1);
+			EditeurQuestionMultiple editeur2 = new EditeurQuestionMultiple(this, -1, false);
 			break;
 		case MULITPLE_REPONSE:
+			EditeurQuestionMultiple editeur3 = new EditeurQuestionMultiple(this, -1, true);
 			break;
 		default:
 			break;
@@ -175,6 +176,29 @@ public class ModeleEditeur extends AbstractTableModel {
 		((ModeleChoixMultiple)getQuestion(index)).setChoix(choix);
 		((ModeleChoixMultiple)getQuestion(index)).setIndexReponse(indexReponse);
 		((ModeleChoixMultiple)getQuestion(index)).setEstImage(estImage);
+		getQuestion(index).setNbEssait(nbEssait);
+		Collections.sort(getQuestionnaire().getModeles());
+		fireTableDataChanged();
+	}
+	
+	public void ajouterQuestionReponseMultiple(int ordrePassage, String question, String messageReussite, String messageFail, 
+			int nbEssait, ArrayList<Reponse> choix, ArrayList<Integer> indexReponse, boolean estImage) {
+		ModeleMultipleReponse mod = new ModeleMultipleReponse(ordrePassage, question,messageReussite, messageFail, 
+				nbEssait, choix, indexReponse, estImage);
+		getQuestionnaire().addAffichable(mod);
+		Collections.sort(getQuestionnaire().getModeles());
+		fireTableDataChanged();
+	}
+	
+	public void modifierQuestionReponseMultiple(int index, int ordrePassage, String question, String messageReussite, String messageFail, 
+			int nbEssait, ArrayList<Reponse> choix, ArrayList<Integer> indexReponse, boolean estImage) {
+		updatedOrdrePassage(index, ordrePassage);
+		getQuestion(index).setQuestion(question);
+		getQuestion(index).setMessageReussite(messageReussite);
+		getQuestion(index).setMessageFail(messageFail);
+		((ModeleMultipleReponse)getQuestion(index)).setChoix(choix);
+		((ModeleMultipleReponse)getQuestion(index)).setIndexReponses(indexReponse);
+		((ModeleMultipleReponse)getQuestion(index)).setEstImage(estImage);
 		getQuestion(index).setNbEssait(nbEssait);
 		Collections.sort(getQuestionnaire().getModeles());
 		fireTableDataChanged();

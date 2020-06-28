@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -50,17 +51,18 @@ public class EditeurQuestionMultiple extends JFrame {
     
     private JButton btnAdd2 = new JButton("Ajouter la réponse");
     
-    private boolean isReponseImage;
+    private boolean isReponseImage, multipleReponse;
     
 	
-	public EditeurQuestionMultiple(ModeleEditeur modele, int posQuestion) {
+	public EditeurQuestionMultiple(ModeleEditeur modele, int posQuestion, boolean multipleReponse) {
 		this.modele = modele;
 		this.posQuestion = posQuestion;
+		this.multipleReponse = multipleReponse;
 		setTitle("Editeur/créateur de questions à choix multiple");
 		if(posQuestion == -1) {
 			btnSave = new JButton("Ajouter question");
 			btnSupprimer = new JButton("Annuler");
-			modeleTab= new ModeleTableauReponse();
+			modeleTab= new ModeleTableauReponse(multipleReponse);
 			isReponseImage= false;
 			
 			
@@ -69,7 +71,7 @@ public class EditeurQuestionMultiple extends JFrame {
 			btnSupprimer = new JButton("Supprimer la question");
 			btnSupprimer.setBackground(Color.RED);
 			ModeleChoixMultiple modeleQuestion = (ModeleChoixMultiple)modele.getQuestion(posQuestion);
-			modeleTab = new ModeleTableauReponse(modeleQuestion.getChoix());
+			modeleTab = new ModeleTableauReponse(modeleQuestion.getChoix(), multipleReponse);
 			isReponseImage = modele.isReponseImage(posQuestion);
 		}
 		modeleTab.setReponseImage(isReponseImage);
@@ -88,14 +90,36 @@ public class EditeurQuestionMultiple extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(posQuestion == -1) {
-					modele.ajouterQuestionMultiple(Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
+					if(multipleReponse) {
+						modele.ajouterQuestionReponseMultiple(Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
+								txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
+								, modeleTab.getReponses(), modeleTab.getIndexReponses(), isReponseImage);
+					}else {
+						ArrayList<Integer> indexReponses = modeleTab.getIndexReponses();
+						int indexReponse = -1;
+						if(indexReponses.size() != 0) {
+							indexReponse = indexReponses.get(0);
+						}
+						modele.ajouterQuestionMultiple(Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
 							txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
-							, modeleTab.getReponses(), modeleTab.getReponses().get(0).getNumero() - 1, isReponseImage);
+							, modeleTab.getReponses(), indexReponse, isReponseImage);
+					}
 					dispose();
 				}else if(posQuestion >= 0) {
+					if(multipleReponse) {
+						modele.modifierQuestionReponseMultiple(posQuestion, Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
+								txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
+								, modeleTab.getReponses(), modeleTab.getIndexReponses(), isReponseImage);
+					}else {
+						ArrayList<Integer> indexReponses = modeleTab.getIndexReponses();
+						int indexReponse = -1;
+						if(indexReponses.size() != 0) {
+							indexReponse = indexReponses.get(0);
+						}
 					modele.modifierQuestionMultiple(posQuestion, Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
 							txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
-							, modeleTab.getReponses(), modeleTab.getReponses().get(0).getNumero() - 1, isReponseImage);
+							, modeleTab.getReponses(),indexReponse, isReponseImage);
+					}
 					dispose();
 				}
 			}

@@ -19,14 +19,15 @@ public class ModeleTableauReponse extends AbstractTableModel {
 	private ArrayList<Reponse> reponses = new ArrayList<>();
 	
 	private int posBonneReponse = -1;
-	private boolean isReponseImage;
+	private boolean isReponseImage, multipleReponse;
 
-	public ModeleTableauReponse(ArrayList<Reponse> choix) {
+	public ModeleTableauReponse(ArrayList<Reponse> choix, boolean multipleReponse) {
 		reponses = choix;
+		this.multipleReponse = multipleReponse;
 	}
 	
-	public ModeleTableauReponse() {
-
+	public ModeleTableauReponse(boolean multipleReponse) {
+		this.multipleReponse = multipleReponse;
 	}
 	
 	public ArrayList<Reponse> getReponses() {
@@ -139,23 +140,37 @@ public class ModeleTableauReponse extends AbstractTableModel {
 			fireTableRowsUpdated(rowIndex, rowIndex);
 			break;
 		case 2:
-			if(posBonneReponse == -1) {
-				posBonneReponse = rowIndex;
-				reponses.get(posBonneReponse).setBonneReponse(true);
-				fireTableRowsUpdated(rowIndex, rowIndex);
-			}else if(posBonneReponse == rowIndex){
-				//aucune update
+			if(multipleReponse) {
+				reponses.get(rowIndex).setBonneReponse((boolean)aValue);
 			}else {
-				reponses.get(posBonneReponse).setBonneReponse(false);
-				fireTableRowsUpdated(posBonneReponse, posBonneReponse);
-				posBonneReponse = rowIndex;
-				reponses.get(posBonneReponse).setBonneReponse(true);
-				fireTableRowsUpdated(posBonneReponse, posBonneReponse);
+				if(posBonneReponse == -1) {
+					posBonneReponse = rowIndex;
+					reponses.get(posBonneReponse).setBonneReponse(true);
+					fireTableRowsUpdated(rowIndex, rowIndex);
+				}else if(posBonneReponse == rowIndex){
+					//aucune update
+				}else {
+					reponses.get(posBonneReponse).setBonneReponse(false);
+					fireTableRowsUpdated(posBonneReponse, posBonneReponse);
+					posBonneReponse = rowIndex;
+					reponses.get(posBonneReponse).setBonneReponse(true);
+					fireTableRowsUpdated(posBonneReponse, posBonneReponse);
+				}
 			}
 			break;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + rowIndex);
 		}
+    }
+    
+    public ArrayList<Integer> getIndexReponses(){
+    	ArrayList<Integer> index = new ArrayList<>();
+    	for(int i = 0; i < reponses.size(); i++) {
+    		if(reponses.get(i).isBonneReponse()) {
+    			index.add(i);
+    		}
+    	}
+    	return index;
     }
     
 	private String creationFichier(String path) {
