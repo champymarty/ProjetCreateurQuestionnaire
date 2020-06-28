@@ -36,6 +36,7 @@ public class EditeurVraiFaux extends JFrame{
 		if(posQuestion == -1) {
 			btnSave = new JButton("Ajouter question");
 			btnSupprimer = new JButton("Annuler");
+			txtOrdrePassage.setText("" +  (modele.getQuestionnaire().getModeles().size() + 1) );
 			
 		}else {
 			btnSave = new JButton("Enregistrer modifications");
@@ -44,7 +45,7 @@ public class EditeurVraiFaux extends JFrame{
 		}
 		creerInterface();
 		creerEvents();
-		setSize(800, 300);
+		setSize(800, 400);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setVisible(true);

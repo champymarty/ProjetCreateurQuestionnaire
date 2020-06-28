@@ -1,5 +1,8 @@
 package Editeur;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -16,18 +19,32 @@ public class ModeleTableauReponse extends AbstractTableModel {
 	private ArrayList<Reponse> reponses = new ArrayList<>();
 	
 	private int posBonneReponse = -1;
+	private boolean isReponseImage;
 
-	
-	public ModeleTableauReponse(ArrayList<String> choix) {
-		
+	public ModeleTableauReponse(ArrayList<Reponse> choix) {
+		reponses = choix;
 	}
 	
 	public ModeleTableauReponse() {
 
 	}
 	
+	public ArrayList<Reponse> getReponses() {
+		return reponses;
+	}
+	
+	public void setReponseImage(boolean isReponseImage) {
+		this.isReponseImage = isReponseImage;
+	}
+	
+	public ArrayList<Integer> getBonneReponses(){
+		ArrayList<Integer> indexRep = new ArrayList<>();
+		indexRep.add(posBonneReponse);
+		return indexRep;
+	}
+	
 	public void ajouterReponse(String text, int numero, boolean bonneReponse) {
-		reponses.add(new Reponse(numero + 1, text, bonneReponse));
+		reponses.add(new Reponse(numero + 1, creationFichier(text), bonneReponse));
 		Collections.sort(reponses);
 		fireTableDataChanged();
 	}
@@ -38,7 +55,14 @@ public class ModeleTableauReponse extends AbstractTableModel {
 		}
 	}
 	public void enleverReponse(int index) {
-		reponses.remove(index);
+		if(posBonneReponse == index) {
+			posBonneReponse = -1;
+		}
+		Reponse repRem = reponses.remove(index);
+		if(isReponseImage) {
+			File file = new File("DATA" + "//" + repRem.getAffichage());
+			file.delete();
+		}
 		enleverTrouEntreNumeroReponse();
 		fireTableDataChanged();
 	}
@@ -133,5 +157,28 @@ public class ModeleTableauReponse extends AbstractTableModel {
 			throw new IllegalArgumentException("Unexpected value: " + rowIndex);
 		}
     }
+    
+	private String creationFichier(String path) {
+		if(isReponseImage) {
+				try {
+					File file = new File (path);
+					File dirDest = new File("DATA" + "//");
+					if(!dirDest.exists()) {
+						dirDest.mkdirs();
+					}
+					File fileDest = new File(dirDest.getPath() + "//" + file.getName());
+					if(!fileDest.exists()) {
+						Files.copy(file.toPath(), fileDest.toPath() , StandardCopyOption.REPLACE_EXISTING);
+						return fileDest.getName();
+					}else {
+						Files.copy(file.toPath(), new File(dirDest.getPath() + "//" + "_" + file.getName()).toPath() , StandardCopyOption.REPLACE_EXISTING);
+						return "_" + file.getName();
+					}
+				}catch(Exception ex){
+					ex.printStackTrace();
+			}
+		}
+		return path;
+	}
 
 }

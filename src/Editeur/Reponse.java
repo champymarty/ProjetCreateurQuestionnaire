@@ -1,7 +1,8 @@
 package Editeur;
 
+import java.io.Serializable;
 
-public class Reponse implements Comparable {
+public class Reponse implements Comparable, Serializable  {
 	
 	private int numero;
 	private String affichage;

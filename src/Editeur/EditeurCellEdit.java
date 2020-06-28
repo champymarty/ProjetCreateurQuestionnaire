@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
+import Lecteur.ModeleChoixMultiple;
+import Lecteur.ModeleMultipleReponse;
 import Lecteur.ModeleQuestion;
 import Lecteur.ModeleVraiFaux;
 
@@ -43,6 +45,8 @@ public class EditeurCellEdit extends AbstractCellEditor implements TableCellEdit
     	ModeleQuestion modelePress = modele.getQuestion(indexModele);
     	if(modelePress instanceof ModeleVraiFaux) {
     		EditeurVraiFaux editeur = new EditeurVraiFaux(modele, indexModele);
+    	}else if(modelePress instanceof ModeleChoixMultiple) {
+    		EditeurQuestionMultiple editeur = new EditeurQuestionMultiple(modele, indexModele);
     	}
     }
  

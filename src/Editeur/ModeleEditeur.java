@@ -95,7 +95,7 @@ public class ModeleEditeur extends AbstractTableModel {
 		modeleGestionnaire.supprimerQuestionnaire(posQuestionnaire);
 	}
 	
-	private Questionnaire getQuestionnaire() {
+	public Questionnaire getQuestionnaire() {
 		return (Questionnaire)modeleGestionnaire.getElementAt(posQuestionnaire);
 	}
 	@Override
@@ -158,13 +158,28 @@ public class ModeleEditeur extends AbstractTableModel {
 	}
 	
 	public void ajouterQuestionMultiple(int ordrePassage, String question, String messageReussite, String messageFail, 
-			int nbEssait, ArrayList<String> choix, int indexReponse, boolean estImage) {
+			int nbEssait, ArrayList<Reponse> choix, int indexReponse, boolean estImage) {
 		ModeleChoixMultiple mod = new ModeleChoixMultiple(ordrePassage, question,messageReussite, messageFail, 
 				nbEssait, choix, indexReponse, estImage);
 		getQuestionnaire().addAffichable(mod);
 		Collections.sort(getQuestionnaire().getModeles());
 		fireTableDataChanged();
 	}
+	
+	public void modifierQuestionMultiple(int index, int ordrePassage, String question, String messageReussite, String messageFail, 
+			int nbEssait, ArrayList<Reponse> choix, int indexReponse, boolean estImage) {
+		updatedOrdrePassage(index, ordrePassage);
+		getQuestion(index).setQuestion(question);
+		getQuestion(index).setMessageReussite(messageReussite);
+		getQuestion(index).setMessageFail(messageFail);
+		((ModeleChoixMultiple)getQuestion(index)).setChoix(choix);
+		((ModeleChoixMultiple)getQuestion(index)).setIndexReponse(indexReponse);
+		((ModeleChoixMultiple)getQuestion(index)).setEstImage(estImage);
+		getQuestion(index).setNbEssait(nbEssait);
+		Collections.sort(getQuestionnaire().getModeles());
+		fireTableDataChanged();
+	}
+	
     
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {

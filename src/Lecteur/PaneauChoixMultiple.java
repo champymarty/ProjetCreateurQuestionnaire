@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -69,7 +70,8 @@ public class PaneauChoixMultiple extends JPanel {
 			JPanel pnl = new JPanel();
 			pnl.add(boutons.get(i));
 			if(modele.isImage()) {
-				ImageIcon originalIcon = new ImageIcon(modele.getChoix(i));
+
+				ImageIcon originalIcon = new ImageIcon("DATA" + "//" + modele.getChoix(i));
 				
 		        int width = ControleurLecteur.LONGEUR / nbColonne;
 		        int height = ControleurLecteur.HAUTEUR / nbLigne;

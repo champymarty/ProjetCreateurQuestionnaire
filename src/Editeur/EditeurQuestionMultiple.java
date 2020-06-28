@@ -7,10 +7,15 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,6 +24,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Lecteur.ModeleChoixMultiple;
 import Lecteur.ModeleVraiFaux;
@@ -37,8 +44,11 @@ public class EditeurQuestionMultiple extends JFrame {
 	
     private JTable tableau;
     private JScrollPane scroll;
-    private JTextField txtReponse, txtReponse2;
+    private JTextField txtReponse;
+    private JLabel lblReponseImage;
     private JPanel pnlReponseCont;
+    
+    private JButton btnAdd2 = new JButton("Ajouter la réponse");
     
     private boolean isReponseImage;
     
@@ -53,14 +63,16 @@ public class EditeurQuestionMultiple extends JFrame {
 			modeleTab= new ModeleTableauReponse();
 			isReponseImage= false;
 			
+			
 		}else {
 			btnSave = new JButton("Enregistrer modifications");
-			btnSupprimer = new JButton("Supprimer");
+			btnSupprimer = new JButton("Supprimer la question");
 			btnSupprimer.setBackground(Color.RED);
 			ModeleChoixMultiple modeleQuestion = (ModeleChoixMultiple)modele.getQuestion(posQuestion);
 			modeleTab = new ModeleTableauReponse(modeleQuestion.getChoix());
 			isReponseImage = modele.isReponseImage(posQuestion);
 		}
+		modeleTab.setReponseImage(isReponseImage);
 		creerInterface();
 		creerEvents();
 		setSize(1200, 600);
@@ -69,20 +81,21 @@ public class EditeurQuestionMultiple extends JFrame {
 		setVisible(true);
 	}
 	
+	
 	public void creerEvents() {
 		btnSave.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(posQuestion == -1) {
-					modele.ajouterQuestionVraiFaux(Integer.parseInt(txtNumero.getText()),
-							txtQuestion.getText(), txtReussite.getText(), txtFail.getText(), 
-							true, Integer.parseInt(txtEssait.getText()));
+					modele.ajouterQuestionMultiple(Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
+							txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
+							, modeleTab.getReponses(), modeleTab.getReponses().get(0).getNumero() - 1, isReponseImage);
 					dispose();
 				}else if(posQuestion >= 0) {
-					modele.modificationQuestionVraiFaux(posQuestion, Integer.parseInt(txtNumero.getText()),
-							txtQuestion.getText(), txtReussite.getText(), txtFail.getText(), 
-							true, Integer.parseInt(txtEssait.getText()));
+					modele.modifierQuestionMultiple(posQuestion, Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
+							txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
+							, modeleTab.getReponses(), modeleTab.getReponses().get(0).getNumero() - 1, isReponseImage);
 					dispose();
 				}
 			}
@@ -111,15 +124,33 @@ public class EditeurQuestionMultiple extends JFrame {
 				if(checkBox.isSelected()) {
 					isReponseImage = true;
 		    	    CardLayout cl = (CardLayout)(pnlReponseCont.getLayout());
+		    	    modeleTab.setReponseImage(isReponseImage);
 		    	    cl.show(pnlReponseCont, "Img");
 				}else {
 					isReponseImage = false;
 		    	    CardLayout cl = (CardLayout)(pnlReponseCont.getLayout());
+		    	    modeleTab.setReponseImage(isReponseImage);
 		    	    cl.show(pnlReponseCont, "txt");
 				}
 				
 			}
 		});
+	}
+	
+	private void openFileChooser() {
+		JFileChooser choix = new JFileChooser();
+		choix.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		
+		FileFilter imageFilter = new FileNameExtensionFilter(
+			    "Image files", ImageIO.getReaderFileSuffixes());
+		choix.addChoosableFileFilter(imageFilter);
+		choix.setFileFilter(imageFilter);
+		
+		int retour=choix.showOpenDialog(null);
+		if(retour==JFileChooser.APPROVE_OPTION){
+			lblReponseImage.setText(choix.getSelectedFile().getAbsolutePath());
+			btnAdd2.setEnabled(true);
+		}
 	}
 	
 	private JPanel creerInterfaceTableauReponse() {
@@ -144,16 +175,16 @@ public class EditeurQuestionMultiple extends JFrame {
         
         JButton btnAdd = new JButton("Ajouter la réponse");
         JButton btnSupprimer = new JButton("Supprimer la réponse sélectionnée");
-        JButton btnAdd2 = new JButton("Ajouter la réponse");
+        btnAdd2.setEnabled(false);
         JButton btnSupprimer2 = new JButton("Supprimer la réponse sélectionnée");
-        btnSupprimer.setBackground(Color.RED);
-        btnSupprimer2.setBackground(Color.RED);
+        btnSupprimer.setBackground(Color.LIGHT_GRAY);
+        btnSupprimer2.setBackground(Color.LIGHT_GRAY);
         JButton btnImage = new JButton("Chercher une image");
         
         txtReponse = new JTextField();
         txtReponse.setPreferredSize(new Dimension(400,25));
-        txtReponse2 = new JTextField();
-        txtReponse2.setPreferredSize(new Dimension(400,25));
+        lblReponseImage = new JLabel();
+        lblReponseImage.setPreferredSize(new Dimension(400,25));
         
         pnlReponseTexte.add(new JLabel("Réponses: "));
         pnlReponseTexte.add(txtReponse);
@@ -161,7 +192,7 @@ public class EditeurQuestionMultiple extends JFrame {
         pnlReponseTexte.add(btnSupprimer);
         
         pnlReponseImage.add(new JLabel("Réponses (chemin d'accès de l'image): "));
-        pnlReponseImage.add(txtReponse2);
+        pnlReponseImage.add(lblReponseImage);
         pnlReponseImage.add(btnAdd2);
         pnlReponseImage.add(btnImage);
         pnlReponseImage.add(btnSupprimer2);
@@ -181,20 +212,29 @@ public class EditeurQuestionMultiple extends JFrame {
         pnlReponse.add(pnlReponseCont, BorderLayout.SOUTH);
         
         //EVENTS//
+        
+        btnImage.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openFileChooser();	
+			}
+		});
         btnAdd.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				modeleTab.ajouterReponse(txtReponse.getText(), modeleTab.getRowCount(), false);
-				
+				txtReponse.setText("");
 			}
 		});
         btnAdd2.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				modeleTab.ajouterReponse(txtReponse2.getText(), modeleTab.getRowCount(), false);
-				
+				modeleTab.ajouterReponse(lblReponseImage.getText(), modeleTab.getRowCount(), false);
+				lblReponseImage.setText("");
+				btnAdd2.setEnabled(false);
 			}
 		});
         btnSupprimer.addActionListener(new ActionListener() {
@@ -210,7 +250,6 @@ public class EditeurQuestionMultiple extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				modeleTab.enleverReponse(tableau.convertRowIndexToModel(tableau.getSelectedRow()));
-				
 			}
 		});
         return pnlReponse;
@@ -218,10 +257,12 @@ public class EditeurQuestionMultiple extends JFrame {
 
 	private JPanel creerInterfaceQuestion() {
 		JPanel pnlNo = new JPanel();
-		pnlNo.add(new JLabel("Numéro de question: "));
+		pnlNo.add(new JLabel("Ordre d'affichage: "));
 		txtNumero.setPreferredSize(new Dimension(50, 25));
 		if(posQuestion >= 0) {
-			txtNumero.setText(modele.getQuestion(posQuestion).getNumeroQuestion()+"");
+			txtNumero.setText(modele.getQuestion(posQuestion).getOrdrePassage()+"");
+		}else {
+		txtNumero.setText("" +  (modele.getQuestionnaire().getModeles().size() + 1) );
 		}
 		pnlNo.add(txtNumero);
 		
