@@ -45,8 +45,9 @@ public class ControleurLecteur {
 		if(indexActuel >= panneauQuestions.size()) {
 			JOptionPane.showMessageDialog(app, "Vous avez réussi " + nbQuestionReussi + " sur "+indexActuel+ " "
 					+ ". Bravo !!!!!!!!!! :D");
+			app.dispose();
 		}else {
-		app.setQuestion(indexActuel, questionnaire.getModeles().get(indexActuel));
+			app.setQuestion(indexActuel, questionnaire.getModeles().get(indexActuel));
 		}
 	}
 	

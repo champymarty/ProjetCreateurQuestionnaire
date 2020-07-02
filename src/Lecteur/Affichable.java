@@ -12,6 +12,7 @@ public class Affichable implements Serializable, Comparable {
 	public Affichable( int ordrePassage) {
 		this.ordrePassage = ordrePassage;
 	}
+	
 	public JPanel generateAffichage() {
 		return null;
 	}

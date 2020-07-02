@@ -12,8 +12,10 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
+import Lecteur.Affichable;
 import Lecteur.ModeleChoixMultiple;
 import Lecteur.ModeleMultipleReponse;
+import Lecteur.ModelePageTitre;
 import Lecteur.ModeleQuestion;
 import Lecteur.ModeleVraiFaux;
 
@@ -45,13 +47,15 @@ public class EditeurCellEdit extends AbstractCellEditor implements TableCellEdit
     
     private void openEditor(int indexModele) {
     	if(!modele.isEditeurQuestionOuvert()) {
-    	ModeleQuestion modelePress = modele.getQuestion(indexModele);
+    	Affichable modelePress = modele.getAffichable(indexModele);
     	if(modelePress instanceof ModeleVraiFaux) {
     		EditeurVraiFaux editeur = new EditeurVraiFaux(modele, indexModele);
     	}else if(modelePress instanceof ModeleChoixMultiple) {
     		EditeurQuestionMultiple editeur = new EditeurQuestionMultiple(modele, indexModele, false);
     	}else if(modelePress instanceof ModeleMultipleReponse) {
     		EditeurQuestionMultiple editeur = new EditeurQuestionMultiple(modele, indexModele, true);
+    	}else if(modelePress instanceof ModelePageTitre) {
+    		EditeurPageTitre editeur4 = new EditeurPageTitre(modele, indexModele);
     	}
     	modele.setEditeurQuestionOuvert(true);
     	}

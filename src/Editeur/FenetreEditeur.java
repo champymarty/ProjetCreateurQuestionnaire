@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import Editeur.ModeleEditeur.Question;
+import Editeur.ModeleEditeur.AffichableType;
 
 public class FenetreEditeur extends JFrame {
 	
@@ -27,7 +27,7 @@ public class FenetreEditeur extends JFrame {
 	private JButton btn = new JButton("Ajouter une question");
 	private JButton btnSave = new JButton("Enregistrer");
 	private JButton btnSupprimer = new JButton("Supprimer");
-    private String[] cboModel = {"Question Vrai/faux", "Question choix multiples", "Question multiple réponse"};
+    private String[] cboModel = {"Question Vrai/faux", "Question choix multiples", "Question multiple réponse", "Page titre"};
     private JComboBox cbo = new JComboBox(cboModel);
 	
     private JTable tableau;
@@ -88,17 +88,20 @@ public class FenetreEditeur extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Question questionType;
+				AffichableType questionType;
 
 				switch (cbo.getSelectedIndex()) {
 				case 0:
-					questionType = Question.VRAI_FAUX;
+					questionType = AffichableType.VRAI_FAUX;
 					break;
 				case 1:
-					questionType = Question.QUESTION_CHOIX_MULTIPLE;
+					questionType = AffichableType.QUESTION_CHOIX_MULTIPLE;
 					break;
 				case 2:
-					questionType = Question.MULITPLE_REPONSE;
+					questionType = AffichableType.MULITPLE_REPONSE;
+					break;
+				case 3:
+					questionType = AffichableType.PAGE_TITRE;
 					break;
 				default:
 					throw new IllegalArgumentException("Unexpected value: " + cbo.getSelectedIndex());

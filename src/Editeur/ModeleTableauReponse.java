@@ -56,7 +56,11 @@ public class ModeleTableauReponse extends AbstractTableModel {
 	
 	public ArrayList<Integer> getBonneReponses(){
 		ArrayList<Integer> indexRep = new ArrayList<>();
-		indexRep.add(posBonneReponse);
+		for(Reponse reponse : reponses) {
+			if(reponse.isBonneReponse()) {
+				indexRep.add(posBonneReponse);
+			}
+		}
 		return indexRep;
 	}
 	

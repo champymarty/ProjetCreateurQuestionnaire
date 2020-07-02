@@ -26,10 +26,11 @@ public class ModeleEditeur extends AbstractTableModel {
 	
 	private boolean editeurQuestionOuvert = false;
 	
-	public enum Question{
+	public enum AffichableType{
 		VRAI_FAUX,
 		QUESTION_CHOIX_MULTIPLE,
-		MULITPLE_REPONSE;
+		MULITPLE_REPONSE,
+		PAGE_TITRE;
 	};
 	
 	public ModeleEditeur(ModeleGestionnaire modeleGestionnaire, int posQuestionnaire) {
@@ -125,7 +126,7 @@ public class ModeleEditeur extends AbstractTableModel {
 		}
 	}
 	
-	public void ouvrirEditeurQuestion(Question question) {
+	public void ouvrirEditeurQuestion(AffichableType question) {
 		switch (question) {
 		case VRAI_FAUX:
 			EditeurVraiFaux editeur1 = new EditeurVraiFaux(this, -1);
@@ -136,6 +137,8 @@ public class ModeleEditeur extends AbstractTableModel {
 		case MULITPLE_REPONSE:
 			EditeurQuestionMultiple editeur3 = new EditeurQuestionMultiple(this, -1, true);
 			break;
+		case PAGE_TITRE:
+			EditeurPageTitre editeur4 = new EditeurPageTitre(this, -1);
 		default:
 			break;
 		}

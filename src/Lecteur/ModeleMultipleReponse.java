@@ -33,6 +33,11 @@ public class ModeleMultipleReponse extends ModeleQuestion implements Serializabl
 		indexSelectionnes = selectionne;
 	}
 	
+	
+	public ArrayList<Integer> getIndexReponses() {
+		return indexReponses;
+	}
+	
 	public boolean estImage() {
 		return estImage;
 	}
@@ -84,7 +89,8 @@ public class ModeleMultipleReponse extends ModeleQuestion implements Serializabl
 			return false;
 		}
 		for(int i = 0; i < indexSelectionnes.size(); i++) {
-			if(indexSelectionnes.get(i) != indexReponses.get(i)) {
+			System.out.print(indexSelectionnes.get(i) + " =? " + indexReponses.get(i));
+			if(indexSelectionnes.get(i).intValue() != indexReponses.get(i).intValue() ) {
 				return false;
 			}
 		}

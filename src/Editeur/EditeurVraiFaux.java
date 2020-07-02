@@ -118,7 +118,7 @@ public class EditeurVraiFaux extends JFrame{
 		//question
 		JPanel pnlQuestion = new JPanel();
 		pnlQuestion.add(new JLabel("Question: "));
-		txtQuestion.setPreferredSize(new Dimension(150, 25));
+		txtQuestion.setPreferredSize(new Dimension(225, 25));
 		if(posQuestion >= 0) {
 			txtQuestion.setText(modele.getQuestion(posQuestion).getQuestion());
 		}

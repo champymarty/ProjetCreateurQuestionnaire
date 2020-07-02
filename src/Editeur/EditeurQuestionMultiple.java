@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -229,6 +231,14 @@ public class EditeurQuestionMultiple extends JFrame {
         
         txtReponse = new JTextField();
         txtReponse.setPreferredSize(new Dimension(400,25));
+        txtReponse.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				modeleTab.ajouterReponse(txtReponse.getText(), modeleTab.getRowCount(), false);
+				txtReponse.setText("");
+			}
+		});
         lblReponseImage = new JLabel();
         lblReponseImage.setPreferredSize(new Dimension(400,25));
         
@@ -314,7 +324,7 @@ public class EditeurQuestionMultiple extends JFrame {
 		
 		JPanel pnlQuestion = new JPanel();
 		pnlQuestion.add(new JLabel("Question: "));
-		txtQuestion.setPreferredSize(new Dimension(150, 25));
+		txtQuestion.setPreferredSize(new Dimension(300, 25));
 		if(posQuestion >= 0) {
 			txtQuestion.setText(modele.getQuestion(posQuestion).getQuestion());
 		}
