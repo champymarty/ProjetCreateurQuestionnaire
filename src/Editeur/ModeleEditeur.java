@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import Lecteur.Affichable;
 import Lecteur.ModeleChoixMultiple;
 import Lecteur.ModeleMultipleReponse;
+import Lecteur.ModelePageTitre;
 import Lecteur.ModeleQuestion;
 import Lecteur.ModeleVraiFaux;
 import gestionnaire.ModeleGestionnaire;
@@ -19,7 +20,7 @@ public class ModeleEditeur extends AbstractTableModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1530180134079951336L;
-	private final String[] entetes = {"Odre de passage", "Type de question", "Question", " Editer"};
+	private final String[] entetes = {"Odre de passage", "Type de question", "Question/Titre", " Editer"};
 	
 	private ModeleGestionnaire modeleGestionnaire;
 	private int posQuestionnaire;
@@ -120,6 +121,8 @@ public class ModeleEditeur extends AbstractTableModel {
 		case 2:
 			if(modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex) instanceof ModeleQuestion) {
 				return ((ModeleQuestion)modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex)).getQuestion();
+			}else if(modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex) instanceof ModelePageTitre) {
+				return ((ModelePageTitre)modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex)).getTitre();
 			}
 		default:
 			return null;
@@ -217,6 +220,22 @@ public class ModeleEditeur extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 	
+	public void ajouterPageTitre(ModelePageTitre modele) {
+		getQuestionnaire().addAffichable(modele);
+		Collections.sort(getQuestionnaire().getModeles());
+		fireTableDataChanged();
+	}
+	
+	public void modifierPageTitre(int index, int ordrePassage, TextRenderer rendererTitre, TextRenderer rendererSousTitre,
+			String titre, String sousTitre) {
+		updatedOrdrePassage(index, ordrePassage);
+		((ModelePageTitre)getAffichable(index)).setTxtRendererTitre(rendererTitre);
+		((ModelePageTitre)getAffichable(index)).setTxtRendererSousTitre(rendererSousTitre);
+		((ModelePageTitre)getAffichable(index)).setTitre(titre);
+		((ModelePageTitre)getAffichable(index)).setSousTitre(sousTitre);
+		Collections.sort(getQuestionnaire().getModeles());
+		fireTableDataChanged();
+	}
     
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -236,17 +255,25 @@ public class ModeleEditeur extends AbstractTableModel {
     	}
     }
     
+    public void afficher() {
+    	System.out.println("--------------------------------");
+		for(Affichable aff : getQuestionnaire().getModeles()) {
+			System.out.println(""+aff.getOrdrePassage() + " " +aff.getQuestionType());
+		}
+		System.out.println("--------------------------------");
+    }
+    
     public void updatedOrdrePassage(int indexAffichableUpdate, int newOrdrePassage) {
     	if(newOrdrePassage > getQuestionnaire().getNombreQuestion() || newOrdrePassage <= 0) {
 			newOrdrePassage = getQuestionnaire().getNombreQuestion();
 		}
 		for(Affichable aff : getQuestionnaire().getModeles()) {
 			if(aff.getOrdrePassage() == newOrdrePassage) {
-				aff.setOrdrePassage(getQuestion(indexAffichableUpdate).getOrdrePassage());
+				aff.setOrdrePassage(getAffichable(indexAffichableUpdate).getOrdrePassage());
 				break;
 			}
 		}
-		getQuestion(indexAffichableUpdate).setOrdrePassage(newOrdrePassage);
+		getAffichable(indexAffichableUpdate).setOrdrePassage(newOrdrePassage);
     }
 
     @Override
@@ -258,7 +285,11 @@ public class ModeleEditeur extends AbstractTableModel {
 			fireTableDataChanged();
 			break;
 		case 2:
-			getQuestion(rowIndex).setQuestion((String) aValue);
+			if(modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex) instanceof ModeleQuestion) {
+				getQuestion(rowIndex).setQuestion((String) aValue);
+			}else if(modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex) instanceof ModelePageTitre) {
+				((ModelePageTitre)getAffichable(rowIndex)).setTitre((String) aValue);
+			}
 			break;
 
 		default:

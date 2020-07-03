@@ -115,6 +115,7 @@ public class FenetreEditeur extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				modele.setNomQuestionnaire(txtNom.getText());
 				modele.enregistrerDonne();
+				dispose();
 			}
 		});
     	

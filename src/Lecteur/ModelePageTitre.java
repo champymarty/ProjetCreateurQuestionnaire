@@ -28,6 +28,14 @@ public class ModelePageTitre extends Affichable implements Serializable {
 		titre = "";
 		sousTitre = "";
 	}
+	
+	public ModelePageTitre(ModelePageTitre modele) {
+		super(modele.getOrdrePassage());
+		txtRendererTitre = modele.getTxtRendererTitre();
+		txtRendererSousTitre = modele.getTxtRendererSousTitre();
+		titre = modele.getTitre();
+		sousTitre = modele.getSousTitre();
+	}
 
 	/**
 	 * 
@@ -36,7 +44,7 @@ public class ModelePageTitre extends Affichable implements Serializable {
 	
 	@Override
 	public JPanel generateAffichage() {
-		return new JPanel();    //TODO
+		return new PaneauPageTitre(this);
 	}
 	
 	public TextRenderer getTxtRendererTitre() {
@@ -79,5 +87,14 @@ public class ModelePageTitre extends Affichable implements Serializable {
 	public void setSousTitre(String sousTitre) {
 		this.sousTitre = sousTitre;
 	}
-
+	
+	@Override
+	public String getQuestionType() {
+		return "Page titre";
+	}
+@Override
+public String toString() {
+	// TODO Auto-generated method stub
+	return "Ordre Passage: " + ordrePassage + " " + getQuestionType();
+}
 }

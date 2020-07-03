@@ -41,7 +41,7 @@ public class FenetrePrincipal extends JFrame{
 	
 	
 	private void creerBoutons() {
-		JButton btnSuivant = new JButton("Prochaine question");
+		JButton btnSuivant = new JButton("Next");
 		JPanel pnl = new JPanel();
 		pnl.add(btnSuivant);
 		add(pnl, BorderLayout.SOUTH);
@@ -63,6 +63,8 @@ public class FenetrePrincipal extends JFrame{
 						}
 					}
 				}
+			}else if(modeleActuel instanceof ModelePageTitre) {
+				controleur.prochaineQuestion(true);
 			}
 
 		}

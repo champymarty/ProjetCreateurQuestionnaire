@@ -14,7 +14,7 @@ public class ControleurLecteur {
 	private Questionnaire questionnaire;
 	private ArrayList<JPanel> panneauQuestions = new ArrayList<>();
 	
-	private int indexActuel = 0, nbQuestionReussi = 0;
+	private int indexActuel = 0, nbQuestionReussi = 0, nbQuestion = 0;
 	
 	public static int LONGEUR = 800;
 	public static int HAUTEUR = 600;
@@ -28,22 +28,21 @@ public class ControleurLecteur {
 	}
 	
 	private void chargerQuestions() {
-		int nbQuestion = 1;
 		for(Affichable modele : questionnaire.getModeles()) {
 			if(modele instanceof ModeleQuestion) {
-				((ModeleQuestion) modele).setNumeroQuestion(nbQuestion++);
+				((ModeleQuestion) modele).setNumeroQuestion(++nbQuestion);
 			}
 			panneauQuestions.add(modele.generateAffichage());
 		}
 	}
 	
 	public void prochaineQuestion(boolean questionPrecedenteReussite) {
-		indexActuel++;
-		if(questionPrecedenteReussite) {
+		if(questionPrecedenteReussite && questionnaire.getModeles().get(indexActuel) instanceof ModeleQuestion) {
 			nbQuestionReussi++;
 		}
+		indexActuel++;
 		if(indexActuel >= panneauQuestions.size()) {
-			JOptionPane.showMessageDialog(app, "Vous avez réussi " + nbQuestionReussi + " sur "+indexActuel+ " "
+			JOptionPane.showMessageDialog(app, "Vous avez réussi " + nbQuestionReussi + " sur "+nbQuestion+ " "
 					+ ". Bravo !!!!!!!!!! :D");
 			app.dispose();
 		}else {
