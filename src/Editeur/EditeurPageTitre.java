@@ -153,15 +153,14 @@ public class EditeurPageTitre extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FontSetter fontSetter = new FontSetter(modelePT.getTxtRendererTitre(), getThis(), 0);
-				
+				FontSetter fontSetter = new FontSetter(modelePT.getTxtRendererTitre(), getThis(), true);
 			}
 		});
 		btnSousTitre.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FontSetter fontSetter = new FontSetter(modelePT.getTxtRendererSousTitre(), getThis(), 1);
+				FontSetter fontSetter2 = new FontSetter(modelePT.getTxtRendererSousTitre(), getThis(), false);
 			}
 		});
 		txtTitre.getDocument().addDocumentListener(new DocumentListener() {
@@ -211,8 +210,8 @@ public class EditeurPageTitre extends JFrame {
 		return this;
 	}
 	
-	public void updateTxt(TextRenderer renderer, int texte) {
-		if(texte == 0) {
+	public void updateTxt(TextRenderer renderer, boolean titre) {
+		if(titre) {
 			previewTitre.setFont(renderer.getFont());
 			previewTitre.setForeground(renderer.getColor());
 			modelePT.setTxtRendererTitre(renderer);

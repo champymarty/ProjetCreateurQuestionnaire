@@ -36,13 +36,13 @@ public class FontSetter extends JFrame {
 	
 	private TextRenderer renderer;
 	private EditeurPageTitre editeur;
-	private int textePos;
+	private boolean titre;
 	
 	
-	public FontSetter(TextRenderer renderer, EditeurPageTitre editeur, int texte) {
-		this.renderer = renderer;
+	public FontSetter(TextRenderer renderer, EditeurPageTitre editeur, boolean titre) {
+		this.renderer = new TextRenderer(renderer);
 		this.editeur = editeur;
-		texte = textePos;
+		this.titre = titre;
 		this.renderer = renderer;
 		setFontInfo();
 		setTitle("Modificateur de Font");
@@ -159,7 +159,7 @@ public class FontSetter extends JFrame {
 		}else if(cboEffect.getSelectedIndex() == 2) {
 			renderer.setFont(new Font((String)cboPolice.getSelectedItem(), Font.ITALIC, Integer.parseInt(txtTaillePolice.getText())));
 		}
-		editeur.updateTxt(renderer, textePos);
+		editeur.updateTxt(renderer, titre);
 		}catch(Exception e){
 			
 		}

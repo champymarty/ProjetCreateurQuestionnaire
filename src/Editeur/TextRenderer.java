@@ -29,6 +29,12 @@ public class TextRenderer implements Serializable {
 		defaultFont = false;
 	}
 	
+	public TextRenderer(TextRenderer renderer) {
+		this.font = renderer.getFont();
+		this.color = renderer.getColor();
+		verifierSiDefaultFont(font);
+	}
+	
 	private void verifierSiDefaultFont(Font font) {
 		if(this.font.equals(font)) {
 			defaultFont = true;
