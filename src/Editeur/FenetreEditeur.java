@@ -27,7 +27,7 @@ public class FenetreEditeur extends JFrame {
 	private JButton btn = new JButton("Ajouter une question");
 	private JButton btnSave = new JButton("Enregistrer");
 	private JButton btnSupprimer = new JButton("Supprimer");
-    private String[] cboModel = {"Question Vrai/faux", "Question choix multiples", "Question multiple réponse", "Page titre"};
+    private String[] cboModel = {"Question Vrai/faux", "Question choix multiples", "Question multiple réponse", "Page titre", "Page de texte"};
     private JComboBox cbo = new JComboBox(cboModel);
 	
     private JTable tableau;
@@ -102,6 +102,9 @@ public class FenetreEditeur extends JFrame {
 					break;
 				case 3:
 					questionType = AffichableType.PAGE_TITRE;
+					break;
+				case 4:
+					questionType = AffichableType.PAGE_TEXTE;
 					break;
 				default:
 					throw new IllegalArgumentException("Unexpected value: " + cbo.getSelectedIndex());

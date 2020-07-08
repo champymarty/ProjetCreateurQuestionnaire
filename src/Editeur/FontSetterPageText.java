@@ -19,7 +19,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class FontSetter extends JFrame {
+public class FontSetterPageText extends JFrame {
 	
 	/**
 	 * 
@@ -36,11 +36,11 @@ public class FontSetter extends JFrame {
 	private JTextField txtTaillePolice = new JTextField();
 	
 	private TextRenderer renderer;
-	private EditeurPageTitre editeur;
+	private EditeurPageTexte editeur;
 	private boolean titre;
 	
 	
-	public FontSetter(TextRenderer renderer, EditeurPageTitre editeur, boolean titre) {
+	public FontSetterPageText(TextRenderer renderer, EditeurPageTexte editeur, boolean titre) {
 		this.renderer = new TextRenderer(renderer);
 		this.editeur = editeur;
 		this.titre = titre;

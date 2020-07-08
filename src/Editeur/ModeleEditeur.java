@@ -8,6 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import Lecteur.Affichable;
 import Lecteur.ModeleChoixMultiple;
 import Lecteur.ModeleMultipleReponse;
+import Lecteur.ModelePageTexte;
 import Lecteur.ModelePageTitre;
 import Lecteur.ModeleQuestion;
 import Lecteur.ModeleVraiFaux;
@@ -31,7 +32,8 @@ public class ModeleEditeur extends AbstractTableModel {
 		VRAI_FAUX,
 		QUESTION_CHOIX_MULTIPLE,
 		MULITPLE_REPONSE,
-		PAGE_TITRE;
+		PAGE_TITRE,
+		PAGE_TEXTE;
 	};
 	
 	public ModeleEditeur(ModeleGestionnaire modeleGestionnaire, int posQuestionnaire) {
@@ -142,6 +144,8 @@ public class ModeleEditeur extends AbstractTableModel {
 			break;
 		case PAGE_TITRE:
 			EditeurPageTitre editeur4 = new EditeurPageTitre(this, -1);
+		case PAGE_TEXTE:
+			EditeurPageTexte editeur5 = new EditeurPageTexte(this, -1);
 		default:
 			break;
 		}
@@ -170,7 +174,7 @@ public class ModeleEditeur extends AbstractTableModel {
 		getQuestion(index).setMessageFail(messageFail);
 		((ModeleVraiFaux)getQuestion(index)).setReponse(reponse);
 		getQuestion(index).setNbEssait(nbEssait);
-		Collections.sort(getQuestionnaire().getModeles());
+		trierAffichables();
 		fireTableDataChanged();
 	}
 	
@@ -179,7 +183,7 @@ public class ModeleEditeur extends AbstractTableModel {
 		ModeleChoixMultiple mod = new ModeleChoixMultiple(ordrePassage, question,messageReussite, messageFail, 
 				nbEssait, choix, indexReponse, estImage);
 		getQuestionnaire().addAffichable(mod);
-		Collections.sort(getQuestionnaire().getModeles());
+		trierAffichables();
 		fireTableDataChanged();
 	}
 	
@@ -193,7 +197,7 @@ public class ModeleEditeur extends AbstractTableModel {
 		((ModeleChoixMultiple)getQuestion(index)).setIndexReponse(indexReponse);
 		((ModeleChoixMultiple)getQuestion(index)).setEstImage(estImage);
 		getQuestion(index).setNbEssait(nbEssait);
-		Collections.sort(getQuestionnaire().getModeles());
+		trierAffichables();
 		fireTableDataChanged();
 	}
 	
@@ -202,7 +206,7 @@ public class ModeleEditeur extends AbstractTableModel {
 		ModeleMultipleReponse mod = new ModeleMultipleReponse(ordrePassage, question,messageReussite, messageFail, 
 				nbEssait, choix, indexReponse, estImage);
 		getQuestionnaire().addAffichable(mod);
-		Collections.sort(getQuestionnaire().getModeles());
+		trierAffichables();
 		fireTableDataChanged();
 	}
 	
@@ -216,14 +220,18 @@ public class ModeleEditeur extends AbstractTableModel {
 		((ModeleMultipleReponse)getQuestion(index)).setIndexReponses(indexReponse);
 		((ModeleMultipleReponse)getQuestion(index)).setEstImage(estImage);
 		getQuestion(index).setNbEssait(nbEssait);
-		Collections.sort(getQuestionnaire().getModeles());
+		trierAffichables();
 		fireTableDataChanged();
 	}
 	
 	public void ajouterPageTitre(ModelePageTitre modele) {
 		getQuestionnaire().addAffichable(modele);
-		Collections.sort(getQuestionnaire().getModeles());
+		trierAffichables();
 		fireTableDataChanged();
+	}
+
+	private void trierAffichables() {
+		Collections.sort(getQuestionnaire().getModeles());
 	}
 	
 	public void modifierPageTitre(int index, int ordrePassage, TextRenderer rendererTitre, TextRenderer rendererSousTitre,
@@ -233,7 +241,13 @@ public class ModeleEditeur extends AbstractTableModel {
 		((ModelePageTitre)getAffichable(index)).setTxtRendererSousTitre(rendererSousTitre);
 		((ModelePageTitre)getAffichable(index)).setTitre(titre);
 		((ModelePageTitre)getAffichable(index)).setSousTitre(sousTitre);
-		Collections.sort(getQuestionnaire().getModeles());
+		trierAffichables();
+		fireTableDataChanged();
+	}
+	
+	public void ajouterPageTexte(ModelePageTexte modele) {
+		getQuestionnaire().addAffichable(modele);
+		trierAffichables();
 		fireTableDataChanged();
 	}
     
@@ -281,7 +295,7 @@ public class ModeleEditeur extends AbstractTableModel {
     	switch (columnIndex) {
 		case 0:
 			updatedOrdrePassage(rowIndex, (int)aValue);
-			Collections.sort(getQuestionnaire().getModeles());
+			trierAffichables();
 			fireTableDataChanged();
 			break;
 		case 2:

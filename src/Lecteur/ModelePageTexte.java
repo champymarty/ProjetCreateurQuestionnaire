@@ -7,7 +7,8 @@ public class ModelePageTexte extends Affichable {
 	private String titre, text;
 	private TextRenderer rendererTitre, rendererText; 
 
-	public ModelePageTexte(int ordrePassage) {
+	public ModelePageTexte(int ordrePassage, String titre, String text, TextRenderer rendererTitre, 
+			TextRenderer rendererText) {
 		super(ordrePassage);
 		// TODO Auto-generated constructor stub
 	}
@@ -35,7 +36,6 @@ public class ModelePageTexte extends Affichable {
 	
 	@Override
 	public String getQuestionType() {
-		// TODO Auto-generated method stub
 		return "Page de texte";
 	}
 	
