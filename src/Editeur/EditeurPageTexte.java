@@ -125,7 +125,7 @@ private void creerEvents() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(posAffichable == -1) {
-				modele.ajouterPageTexte(genererModele());
+				modele.ajouterAffichable(genererModele());
 			}else {
 				ModelePageTexte modeleModifier = genererModele();
 				modele.modifierPageTexte(posAffichable, modeleModifier.getOrdrePassage(),

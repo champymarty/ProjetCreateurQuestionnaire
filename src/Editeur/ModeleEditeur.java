@@ -182,15 +182,6 @@ public class ModeleEditeur extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 	
-	public void ajouterQuestionMultiple(int ordrePassage, String question, String messageReussite, String messageFail, 
-			int nbEssait, ArrayList<Reponse> choix, int indexReponse, boolean estImage) {
-		ModeleChoixMultiple mod = new ModeleChoixMultiple(ordrePassage, question,messageReussite, messageFail, 
-				nbEssait, choix, indexReponse, estImage);
-		getQuestionnaire().addAffichable(mod);
-		trierAffichables();
-		fireTableDataChanged();
-	}
-	
 	public void modifierQuestionMultiple(int index, int ordrePassage, String question, String messageReussite, String messageFail, 
 			int nbEssait, ArrayList<Reponse> choix, int indexReponse, boolean estImage) {
 		updatedOrdrePassage(index, ordrePassage);
@@ -204,15 +195,7 @@ public class ModeleEditeur extends AbstractTableModel {
 		trierAffichables();
 		fireTableDataChanged();
 	}
-	
-	public void ajouterQuestionReponseMultiple(int ordrePassage, String question, String messageReussite, String messageFail, 
-			int nbEssait, ArrayList<Reponse> choix, ArrayList<Integer> indexReponse, boolean estImage) {
-		ModeleMultipleReponse mod = new ModeleMultipleReponse(ordrePassage, question,messageReussite, messageFail, 
-				nbEssait, choix, indexReponse, estImage);
-		getQuestionnaire().addAffichable(mod);
-		trierAffichables();
-		fireTableDataChanged();
-	}
+
 	
 	public void modifierQuestionReponseMultiple(int index, int ordrePassage, String question, String messageReussite, String messageFail, 
 			int nbEssait, ArrayList<Reponse> choix, ArrayList<Integer> indexReponse, boolean estImage) {
@@ -224,12 +207,6 @@ public class ModeleEditeur extends AbstractTableModel {
 		((ModeleMultipleReponse)getQuestion(index)).setIndexReponses(indexReponse);
 		((ModeleMultipleReponse)getQuestion(index)).setEstImage(estImage);
 		getQuestion(index).setNbEssait(nbEssait);
-		trierAffichables();
-		fireTableDataChanged();
-	}
-	
-	public void ajouterPageTitre(ModelePageTitre modele) {
-		getQuestionnaire().addAffichable(modele);
 		trierAffichables();
 		fireTableDataChanged();
 	}
@@ -245,12 +222,6 @@ public class ModeleEditeur extends AbstractTableModel {
 		((ModelePageTitre)getAffichable(index)).setTxtRendererSousTitre(rendererSousTitre);
 		((ModelePageTitre)getAffichable(index)).setTitre(titre);
 		((ModelePageTitre)getAffichable(index)).setSousTitre(sousTitre);
-		trierAffichables();
-		fireTableDataChanged();
-	}
-	
-	public void ajouterPageTexte(ModelePageTexte modele) {
-		getQuestionnaire().addAffichable(modele);
 		trierAffichables();
 		fireTableDataChanged();
 	}

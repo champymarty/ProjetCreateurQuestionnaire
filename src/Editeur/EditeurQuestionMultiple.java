@@ -115,18 +115,18 @@ public class EditeurQuestionMultiple extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(posQuestion == -1) {
 					if(multipleReponse) {
-						modele.ajouterQuestionReponseMultiple(Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
+						modele.ajouterAffichable(new ModeleMultipleReponse(Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
 								txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
-								, modeleTab.getReponses(), modeleTab.getIndexReponses(), isReponseImage);
+								, modeleTab.getReponses(), modeleTab.getIndexReponses(), isReponseImage));
 					}else {
 						ArrayList<Integer> indexReponses = modeleTab.getIndexReponses();
 						int indexReponse = -1;
 						if(indexReponses.size() != 0) {
 							indexReponse = indexReponses.get(0);
 						}
-						modele.ajouterQuestionMultiple(Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
+						modele.ajouterAffichable(new ModeleChoixMultiple(Integer.parseInt(txtNumero.getText()), txtQuestion.getText(),
 							txtReussite.getText(), txtFail.getText(), Integer.parseInt(txtEssait.getText())
-							, modeleTab.getReponses(), indexReponse, isReponseImage);
+							, modeleTab.getReponses(), indexReponse, isReponseImage));
 					}
 					quit();
 				}else if(posQuestion >= 0) {

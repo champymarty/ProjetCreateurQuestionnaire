@@ -70,7 +70,7 @@ public class EditeurPageTitre extends JFrame {
 			btnSave.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					modele.ajouterPageTitre(modelePT);
+					modele.ajouterAffichable(modelePT);
 					modele.setEditeurQuestionOuvert(false);
 					dispose();
 				}
