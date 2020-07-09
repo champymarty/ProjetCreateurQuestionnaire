@@ -70,6 +70,9 @@ public class ModeleEditeur extends AbstractTableModel {
 	
 	public void supprimerAffichable(int index) {
 		( (Questionnaire)modeleGestionnaire.getElementAt(posQuestionnaire) ).getModeles().remove(index);
+		for(int i = index ;i < ( (Questionnaire)modeleGestionnaire.getElementAt(posQuestionnaire) ).getNombreQuestion(); i++) {
+			( (Questionnaire)modeleGestionnaire.getElementAt(posQuestionnaire) ).getModeles().get(i).setOrdrePassage(i+1);
+		}
 		fireTableRowsDeleted(index, index);
 	}
 
@@ -105,7 +108,7 @@ public class ModeleEditeur extends AbstractTableModel {
 		return entetes.length;
 	}
 	
-	public void supprimerQuestionnaire() {
+	public void supprimerAffichable() {
 		modeleGestionnaire.supprimerQuestionnaire(posQuestionnaire);
 	}
 	
@@ -125,6 +128,8 @@ public class ModeleEditeur extends AbstractTableModel {
 				return ((ModeleQuestion)modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex)).getQuestion();
 			}else if(modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex) instanceof ModelePageTitre) {
 				return ((ModelePageTitre)modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex)).getTitre();
+			}else if(modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex) instanceof ModelePageTexte) {
+				return ((ModelePageTexte)modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex)).getTitre();
 			}
 		default:
 			return null;
@@ -144,24 +149,23 @@ public class ModeleEditeur extends AbstractTableModel {
 			break;
 		case PAGE_TITRE:
 			EditeurPageTitre editeur4 = new EditeurPageTitre(this, -1);
+			break;
 		case PAGE_TEXTE:
 			EditeurPageTexte editeur5 = new EditeurPageTexte(this, -1);
+			break;
 		default:
 			break;
 		}
 		
 	}
 	
-	
-	public void ajouterQuestionVraiFaux(int ordrePassage, String question, String messageReussite, String messageFail,
-			boolean reponse, int nbEssait) {
-		if(ordrePassage >= getQuestionnaire().getNombreQuestion() || ordrePassage <= 0) {
-			ordrePassage = getQuestionnaire().getNombreQuestion() + 1;
+	public void ajouterAffichable(Affichable affichable) {
+		if(affichable.getOrdrePassage() >= getQuestionnaire().getNombreQuestion() || affichable.getOrdrePassage() <= 0) {
+			affichable.setOrdrePassage(getQuestionnaire().getNombreQuestion() + 1);
 		}
-		ModeleVraiFaux mod = new ModeleVraiFaux(ordrePassage, question, messageReussite, messageFail, reponse, nbEssait);
-		getQuestionnaire().getModeles().add(ordrePassage - 1, mod);
-		for(int i = ordrePassage ; i < getQuestionnaire().getNombreQuestion() ; i++) {
-			getQuestion(i).setOrdrePassage(getQuestion(i).getOrdrePassage() + 1);
+		getQuestionnaire().getModeles().add(affichable.getOrdrePassage() - 1, affichable);
+		for(int i = affichable.getOrdrePassage() ; i < getQuestionnaire().getNombreQuestion() ; i++) {
+			getAffichable(i).setOrdrePassage(getAffichable(i).getOrdrePassage() + 1);
 		}
 		fireTableDataChanged();
 	}
@@ -247,6 +251,17 @@ public class ModeleEditeur extends AbstractTableModel {
 	
 	public void ajouterPageTexte(ModelePageTexte modele) {
 		getQuestionnaire().addAffichable(modele);
+		trierAffichables();
+		fireTableDataChanged();
+	}
+	
+	public void modifierPageTexte(int index, int ordrePassage, TextRenderer rendererTitre, TextRenderer rendererText,
+			String titre, String texte) {
+		updatedOrdrePassage(index, ordrePassage);
+		((ModelePageTexte)getAffichable(index)).setRendererTitre(rendererTitre);
+		((ModelePageTexte)getAffichable(index)).setRendererText(rendererText);
+		((ModelePageTexte)getAffichable(index)).setTitre(titre);
+		((ModelePageTexte)getAffichable(index)).setText(texte);
 		trierAffichables();
 		fireTableDataChanged();
 	}

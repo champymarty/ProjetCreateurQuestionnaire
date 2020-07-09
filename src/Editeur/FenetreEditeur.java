@@ -59,7 +59,7 @@ public class FenetreEditeur extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int reply = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer ce questionnaire ?", "Confirmation", JOptionPane.YES_NO_OPTION);
 				if (reply == JOptionPane.YES_OPTION) {
-					modele.supprimerQuestionnaire();
+					modele.supprimerAffichable();
 					dispose();
 				} 	
 			}

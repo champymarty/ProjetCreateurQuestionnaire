@@ -72,9 +72,10 @@ public class EditeurVraiFaux extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(posQuestion == -1) {
-					modele.ajouterQuestionVraiFaux(Integer.parseInt(txtOrdrePassage.getText()),
+					ModeleVraiFaux modeleVF = new ModeleVraiFaux(Integer.parseInt(txtOrdrePassage.getText()),
 							txtQuestion.getText(), txtReussite.getText(), txtFail.getText(), 
 							true, Integer.parseInt(txtEssait.getText()));
+					modele.ajouterAffichable(modeleVF);
 					quit();
 				}else if(posQuestion >= 0) {
 					modele.modificationQuestionVraiFaux(posQuestion, Integer.parseInt(txtOrdrePassage.getText()),

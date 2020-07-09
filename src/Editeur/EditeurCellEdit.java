@@ -15,6 +15,7 @@ import javax.swing.table.TableCellEditor;
 import Lecteur.Affichable;
 import Lecteur.ModeleChoixMultiple;
 import Lecteur.ModeleMultipleReponse;
+import Lecteur.ModelePageTexte;
 import Lecteur.ModelePageTitre;
 import Lecteur.ModeleQuestion;
 import Lecteur.ModeleVraiFaux;
@@ -56,6 +57,8 @@ public class EditeurCellEdit extends AbstractCellEditor implements TableCellEdit
     		EditeurQuestionMultiple editeur = new EditeurQuestionMultiple(modele, indexModele, true);
     	}else if(modelePress instanceof ModelePageTitre) {
     		EditeurPageTitre editeur4 = new EditeurPageTitre(modele, indexModele);
+    	}else if(modelePress instanceof ModelePageTexte) {
+    		EditeurPageTexte editeur5 = new EditeurPageTexte(modele, indexModele);
     	}
     	modele.setEditeurQuestionOuvert(true);
     	}

@@ -1,6 +1,7 @@
 package Editeur;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -15,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -32,7 +34,7 @@ public class EditeurPageTitre extends JFrame {
 	private JTextField txtTitre = new JTextField(), txtSousTitre = new JTextField(), ordrePassage = new JTextField();
 	private JLabel previewTitre, previewSousTitre;
 	private JButton btnTitre = new JButton("Edit font titre"), btnSousTitre = new JButton("Edit font sous-titre");
-	private JButton btnSave, btnCancel = new JButton("Annuler");
+	private JButton btnSave, btnCancel = new JButton("Annuler"), delete = new JButton("Supprimer page titre");
 	
 	
 	public EditeurPageTitre(ModeleEditeur modele, int posAffichable) {
@@ -106,6 +108,8 @@ public class EditeurPageTitre extends JFrame {
 		ordrePassage.setText("" + modelePT.getOrdrePassage());
 		pnlOrdrePassage.add(new JLabel("Ordre passage: "));
 		pnlOrdrePassage.add(ordrePassage);
+		pnlOrdrePassage.add(delete);
+		delete.setBackground(Color.RED);
 		pnlBox.add(pnlOrdrePassage);
 		ordrePassage.getDocument().addDocumentListener(new DocumentListener() {
 			
@@ -127,6 +131,23 @@ public class EditeurPageTitre extends JFrame {
 			public void changedUpdate(DocumentEvent e) {
 				// TODO Auto-generated method stub
 				
+			}
+		});
+		delete.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(posAffichable == -1) {
+					modele.setEditeurQuestionOuvert(false);
+					dispose();
+				}else if(posAffichable >= 0) {
+					int reply = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette question ? Cette"
+							+ "Action est irréversible", "Confirmation", JOptionPane.YES_NO_OPTION);
+					if (reply == JOptionPane.YES_OPTION) {
+						modele.supprimerAffichable(posAffichable);
+						modele.setEditeurQuestionOuvert(false);
+						dispose();
+					} 
+				}
 			}
 		});
 		

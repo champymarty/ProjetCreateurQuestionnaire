@@ -10,7 +10,10 @@ public class ModelePageTexte extends Affichable {
 	public ModelePageTexte(int ordrePassage, String titre, String text, TextRenderer rendererTitre, 
 			TextRenderer rendererText) {
 		super(ordrePassage);
-		// TODO Auto-generated constructor stub
+		this.titre = titre;
+		this.text = text;
+		this.rendererTitre = rendererTitre;
+		this.rendererText = rendererText;
 	}
 
 	/**

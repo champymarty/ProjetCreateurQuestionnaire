@@ -52,6 +52,8 @@ private void creerInterfaceTitre() {
 		txtTitre = new JTextField();
 	}else {
 		txtTitre = new JTextField(((ModelePageTexte)modele.getAffichable(posAffichable)).getTitre());
+		txtTitre.setFont(((ModelePageTexte)modele.getAffichable(posAffichable)).getRendererTitre().getFont());
+		txtTitre.setForeground(((ModelePageTexte)modele.getAffichable(posAffichable)).getRendererTitre().getColor());
 	}
 	btnEditTitre = new JButton("Edit titre font");
 	txtTitre.setPreferredSize(new Dimension(200, 25));
@@ -67,6 +69,8 @@ private void creerInterfaceText() {
 		txtArea = new JTextArea();
 	}else {
 		txtArea = new JTextArea(((ModelePageTexte)modele.getAffichable(posAffichable)).getText());
+		txtArea.setFont(((ModelePageTexte)modele.getAffichable(posAffichable)).getRendererText().getFont());
+		txtArea.setForeground(((ModelePageTexte)modele.getAffichable(posAffichable)).getRendererText().getColor());
 	}
 	scroll = new JScrollPane(txtArea);
 	scroll.setPreferredSize(new Dimension(700, 300));
@@ -123,7 +127,10 @@ private void creerEvents() {
 			if(posAffichable == -1) {
 				modele.ajouterPageTexte(genererModele());
 			}else {
-				
+				ModelePageTexte modeleModifier = genererModele();
+				modele.modifierPageTexte(posAffichable, modeleModifier.getOrdrePassage(),
+						modeleModifier.getRendererTitre(), modeleModifier.getRendererText(),
+						modeleModifier.getTitre(), modeleModifier.getText());
 			}
 			quit();
 		}
