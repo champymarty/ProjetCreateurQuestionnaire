@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -26,10 +27,10 @@ public class EditeurPageTexte extends JFrame {
 	 */
 	private static final long serialVersionUID = 5147145409834559135L;
 	
-private JTextField txtTitre;
+private JTextField txtTitre, txtNumero;
 private JTextArea txtArea;
 private JScrollPane scroll;
-private JButton btnApprove,btnAnnuler, btnEditTxt, btnEditTitre, btnPreview = new JButton("Voir apperçu");
+private JButton btnApprove,btnAnnuler, btnEditTxt, btnEditTitre, btnPreview = new JButton("Voir apperçu"), btnSupprimer = new JButton("Supprimer la page texte");
 
 private ModeleEditeur modele;
 private int posAffichable = -1;
@@ -43,6 +44,7 @@ public EditeurPageTexte(ModeleEditeur modele, int posAffichable) {
 	creerInterfaceText();
 	creerInterfaceBouton();
 	creerEvents();
+	setAlwaysOnTop(true);
 	setVisible(true);
 }
 
@@ -50,16 +52,23 @@ private void creerInterfaceTitre() {
 	JPanel pnl = new JPanel();
 	if(posAffichable == -1) {
 		txtTitre = new JTextField();
+		txtNumero = new JTextField(""+(modele.getRowCount() + 1));
 	}else {
 		txtTitre = new JTextField(((ModelePageTexte)modele.getAffichable(posAffichable)).getTitre());
 		txtTitre.setFont(((ModelePageTexte)modele.getAffichable(posAffichable)).getRendererTitre().getFont());
 		txtTitre.setForeground(((ModelePageTexte)modele.getAffichable(posAffichable)).getRendererTitre().getColor());
+		txtNumero = new JTextField(""+((ModelePageTexte)modele.getAffichable(posAffichable)).getOrdrePassage());
 	}
+	txtNumero.setPreferredSize(new Dimension(50, 25));
 	btnEditTitre = new JButton("Edit titre font");
 	txtTitre.setPreferredSize(new Dimension(200, 25));
+	pnl.add(new JLabel("Ordre passage: "));
+	pnl.add(txtNumero);
 	pnl.add(new JLabel("Titre: "));
 	pnl.add(txtTitre);
 	pnl.add(btnEditTitre);
+	pnl.add(btnSupprimer);
+	btnSupprimer.setBackground(Color.RED);
 	add(pnl, BorderLayout.NORTH);
 }
 
@@ -138,6 +147,7 @@ private void creerEvents() {
     btnEditTxt.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			setAlwaysOnTop(false);
 			@SuppressWarnings("unused")
 			FontSetterPageText editeur = new FontSetterPageText(new TextRenderer(txtArea.getFont(), txtArea.getForeground()), 
 					getThis(), false);
@@ -146,6 +156,7 @@ private void creerEvents() {
     btnEditTitre.addActionListener(new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			setAlwaysOnTop(false);
 			@SuppressWarnings("unused")
 			FontSetterPageText editeur = new FontSetterPageText(new TextRenderer(txtTitre.getFont(), txtTitre.getForeground()), 
 					getThis(), true);
@@ -158,13 +169,33 @@ private void creerEvents() {
 			JFrame frame = new JFrame();
 			frame.getContentPane().add(genererModele().generateAffichage());
 			frame.setTitle("Preview Page titre");
+			frame.setSize(800, 500);
 			frame.setVisible(true);
 			frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		}
 	});
+    btnSupprimer.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			setAlwaysOnTop(false);
+			if(posAffichable == -1) {
+				modele.setEditeurQuestionOuvert(false);
+				dispose();
+			}else if(posAffichable >= 0) {
+				int reply = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer cette question ? Cette"
+						+ " action est irréversible", "Confirmation", JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+					modele.supprimerAffichable(posAffichable);
+					modele.setEditeurQuestionOuvert(false);
+					dispose();
+				} 
+			}
+		}
+	});
 }
 private ModelePageTexte genererModele() {
-	return new ModelePageTexte(modele.getRowCount() + 1, txtTitre.getText(), txtArea.getText(),
+	return new ModelePageTexte(Integer.parseInt(txtNumero.getText()), txtTitre.getText(), txtArea.getText(),
 			new TextRenderer(txtTitre.getFont(), txtTitre.getForeground()), new TextRenderer(txtArea.getFont(), txtArea.getForeground()) );
 }
 

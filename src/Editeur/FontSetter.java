@@ -138,6 +138,7 @@ public class FontSetter extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 		        
 		        // color chooser Dialog Box 
+				setAlwaysOnTop(false);
 		        Color color = JColorChooser.showDialog(null, 
 		                    "Select a color", renderer.getColor());
 		        if(color != null) {

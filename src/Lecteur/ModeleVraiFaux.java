@@ -15,6 +15,7 @@ public class ModeleVraiFaux extends ModeleQuestion implements Serializable{
 	public ModeleVraiFaux(int ordreAffichage, String question, String messageReussite, String messageFail, boolean reponse, int nbEssait) {
 		super(ordreAffichage, question, messageReussite, messageFail, nbEssait);
 		this.reponse = reponse;
+		reponseActuel = !reponse;
 	}
 	
 	@Override

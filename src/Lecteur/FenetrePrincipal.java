@@ -63,7 +63,7 @@ public class FenetrePrincipal extends JFrame{
 						}
 					}
 				}
-			}else if(modeleActuel instanceof ModelePageTitre) {
+			}else if(modeleActuel instanceof ModelePageTitre || modeleActuel instanceof ModelePageTexte) {
 				controleur.prochaineQuestion(true);
 			}
 

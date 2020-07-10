@@ -1,5 +1,7 @@
 package Lecteur;
 
+import javax.swing.JPanel;
+
 import Editeur.TextRenderer;
 
 public class ModelePageTexte extends Affichable {
@@ -56,6 +58,12 @@ public class ModelePageTexte extends Affichable {
 	
 	public String getText() {
 		return text;
+	}
+	
+	@Override
+	public JPanel generateAffichage() {
+		// TODO Auto-generated method stub
+		return new PaneauPageTexte(this);
 	}
 
 }

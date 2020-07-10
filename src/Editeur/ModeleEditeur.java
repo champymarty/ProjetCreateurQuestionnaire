@@ -289,6 +289,8 @@ public class ModeleEditeur extends AbstractTableModel {
 				getQuestion(rowIndex).setQuestion((String) aValue);
 			}else if(modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex) instanceof ModelePageTitre) {
 				((ModelePageTitre)getAffichable(rowIndex)).setTitre((String) aValue);
+			}else if(modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex) instanceof ModelePageTexte) {
+				((ModelePageTexte)modeleGestionnaire.getModeleAt(posQuestionnaire, rowIndex)).setTitre((String)aValue);
 			}
 			break;
 

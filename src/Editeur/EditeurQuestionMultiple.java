@@ -100,6 +100,7 @@ public class EditeurQuestionMultiple extends JFrame {
             	quit();
             }
         });
+	    setAlwaysOnTop(true);
 		setVisible(true);
 	}
 	
@@ -152,6 +153,7 @@ public class EditeurQuestionMultiple extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setAlwaysOnTop(false);
 				if(posQuestion == -1) {
 					quit();
 				}else if(posQuestion >= 0) {

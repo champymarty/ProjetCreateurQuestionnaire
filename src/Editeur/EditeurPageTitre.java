@@ -61,6 +61,7 @@ public class EditeurPageTitre extends JFrame {
 				dispose();	
             }
         });
+	    setAlwaysOnTop(true);
 		setVisible(true);
 	}
 	
@@ -136,6 +137,7 @@ public class EditeurPageTitre extends JFrame {
 		delete.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setAlwaysOnTop(false);
 				if(posAffichable == -1) {
 					modele.setEditeurQuestionOuvert(false);
 					dispose();
