@@ -176,6 +176,7 @@ public class EditeurPageTitre extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setAlwaysOnTop(false);
 				FontSetter fontSetter = new FontSetter(modelePT.getTxtRendererTitre(), getThis(), true);
 			}
 		});
@@ -183,6 +184,7 @@ public class EditeurPageTitre extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				setAlwaysOnTop(false);
 				FontSetter fontSetter2 = new FontSetter(modelePT.getTxtRendererSousTitre(), getThis(), false);
 			}
 		});

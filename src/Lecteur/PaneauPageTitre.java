@@ -27,13 +27,13 @@ public class PaneauPageTitre extends JPanel {
 		center.anchor = GridBagConstraints.CENTER;
 		center.fill = GridBagConstraints.NONE;
 		
-		previewTitre = new JLabel(modelePT.getTitre());
+		previewTitre = new JLabel(modelePT.getTitre() + " ");
 		previewTitre.setFont(modelePT.getFontTitre());
 		previewTitre.setForeground(modelePT.getTxtRendererTitre().getColor());
 		previewTitre.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		pnl.add(previewTitre, center);
 		
-		previewSousTitre = new JLabel(modelePT.getSousTitre());
+		previewSousTitre = new JLabel(modelePT.getSousTitre() + " ");
 		previewSousTitre.setFont(modelePT.getFontSousTitre());
 		previewSousTitre.setForeground(modelePT.getTxtRendererSousTitre().getColor());
 		previewSousTitre.setAlignmentX(JLabel.CENTER_ALIGNMENT);
